@@ -38,7 +38,7 @@ const [newTransformerLatitude, setNewTransformerLatitude] = useState('')
 const [newTransformerLongitude, setNewTransformerLongitude] = useState('')
 const handleLogin = async () => {
   try {
-    const response = await fetch('https://gridpulse-v-backend.onrender.com/api/transformers', {
+    const response = await fetch('https://gridpulse-v-backend.onrender.com/api/login', {
   method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -140,7 +140,6 @@ useEffect(() => {
     return
   }
 
-  useEffect(() => {
   const fetchSensorReadings = async () => {
     try {
       const response = await fetch(
@@ -173,11 +172,8 @@ useEffect(() => {
     }
   }
 
-  if (selectedTransformer) {
-    fetchSensorReadings()
-  }
+  fetchSensorReadings()
 }, [selectedTransformer])
-  
   useEffect(() => {
   fetch('https://gridpulse-v-backend.onrender.com/api/devices')
     .then((response) => response.json())
@@ -3277,6 +3273,6 @@ Number(sensorReadings[0].vibration_mm_s) > vibrationThreshold && (
   </div>
   )
 }
-)}
+
 export default App
     
