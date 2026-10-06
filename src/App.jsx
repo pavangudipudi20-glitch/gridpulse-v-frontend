@@ -581,12 +581,15 @@ let healthScore = 100
   }
 
   try {
-      const response = await fetch(
-       'https://gridpulse-v-backend.onrender.com/api/login' ,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
+     const response = await fetch(
+  'https://gridpulse-v-backend.onrender.com/api/transformers',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${
+        localStorage.getItem('gridpulse_token') || ''
+      }`
           },
           body: JSON.stringify({
             id: newTransformerId,
@@ -618,8 +621,15 @@ let healthScore = 100
       setNewTransformerLongitude('')
 
       const refreshResponse = await fetch(
-        'https://gridpulse-v-backend.onrender.com/api/transformers'
-      )
+  'https://gridpulse-v-backend.onrender.com/api/transformers',
+  {
+    headers: {
+      Authorization: `Bearer ${
+        localStorage.getItem('gridpulse_token') || ''
+      }`
+    }
+  }
+)
 
       const refreshedTransformers = await refreshResponse.json()
 
@@ -2240,10 +2250,19 @@ let healthScore = 100
 
                     <h3>Device Connection</h3>
 
-                    <p>
-                      Demo device status: Connected
-                    </p>
+                   <p>
+  {(() => {
+    const transformerDevice = devices.find(
+      (device) => device.transformer_id === selectedTransformer.id
+    )
 
+    if (!transformerDevice) {
+      return 'No device registered'
+    }
+
+    return `Device Status: ${transformerDevice.status}`
+  })()}
+</p>
                   </div>
 
                   {detailTab === 'Overview' && (
@@ -2280,7 +2299,10 @@ let healthScore = 100
     <p>No sensor data available.</p>
   )}
 
-  <p>DEMO RULE-BASED ANALYSIS — not real AI.</p>
+  <p>
+  Condition assessment based on real-time sensor data received from the
+  ESP32 and stored in PostgreSQL.
+</p>
 
 </div>
                   
